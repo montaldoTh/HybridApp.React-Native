@@ -1,7 +1,6 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Text, View, TouchableOpacity } from "react-native";
 import useAppStyle from "../../appStyles";
 import { useEffect, useState } from "react";
-import { Button } from "../../component/Button";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const MaterialList = ({ navigation })=>{
@@ -38,6 +37,29 @@ export const MaterialList = ({ navigation })=>{
         });
     }, []);
 
+    const reservationUpdate = (id) => {
+        console.log("try update");
+        fetch(`http://192.168.178.62:3000/material/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ material: {
+                id : id,
+                reserver: 1, 
+            }})
+        })
+        .then((response) =>  response.json())
+        .then((data) => 
+            fetch("http://192.168.178.62:3000/materials")
+            .then((result) => result.json())
+            .then((data) => {
+                setMaterialList(data);
+                console.log("updated");
+            }))
+        .catch((err) => console.log(err))
+    }
+
     return(
         <View style={style.container}>
             <Text style={[style.text, {marginBottom: 20 }]}>
@@ -47,14 +69,28 @@ export const MaterialList = ({ navigation })=>{
                 style={{ width: "100%", padding: 15 }}
                 data={materialList}
                 renderItem={({ item }) => {
+                    return(
                     <View
                         style={[
                             materialStyle,
                             item.complete ? { backgroundColor: "#beebc0" } : {}
                         ]}
                     >
-                        <Text style={{ color: "#fff"}}>{item.name}</Text>
+                        <Text>{item.name}</Text>
+                        <Text style={{ fontSize: 7, color: "#525252"}}>{item.date}</Text>
+                        {
+                            item.reserver === 0 && (
+                                <TouchableOpacity style={[style.button]}>
+                                    <Text style={style.button.text} onPress={() => reservationUpdate(item.id)}>Reserver</Text>
+                                </TouchableOpacity>
+                            )
+                        }
+
+                        <TouchableOpacity style={[style.button, { backgroundColor: "#487aa1"}]} onPress={() => navigation.navigate("Material", { id: item.id})}>
+                            <Text style={style.button.text}>Voir</Text>
+                        </TouchableOpacity>
                     </View>
+                    )
                 }}
             ></FlatList>
         </View>

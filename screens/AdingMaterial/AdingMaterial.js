@@ -43,6 +43,7 @@ export const AdingMaterial = ({ navigation }) => {
         })
         .then((response) => response.json())
         .then((data) => console.log(data))
+        .then(navigation.navigate("Material list"))
         .catch((err) => console.log(err))
     }
 
@@ -67,6 +68,28 @@ export const AdingMaterial = ({ navigation }) => {
         }
     };
 
+    const onSelectPhotoFromLibrary = async () => {
+      const libraryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (libraryPermission.granted === false) {
+          alert("La permission pour accéder a votre gallerie d'image est nécessaire ajouter une image");
+          return;
+      }
+  
+      const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: false,
+          aspect: [4, 3],
+          quality: 1,
+      });
+  
+      if (!result.canceled) {
+        const { assets } = result;
+        if (assets && assets.length > 0) {
+          setPhoto(assets[0].uri);
+        }
+      }
+    };
+
     return(
       <View style={usdTheme.container}>
         <Input
@@ -84,11 +107,15 @@ export const AdingMaterial = ({ navigation }) => {
         ></TextInput>
 
         <TouchableOpacity onPress={()=> onAddPhoto()} style={[usdTheme.button]}>
-          <Text style={usdTheme.button.text}>Ajouter photo</Text>
+          <Text style={usdTheme.button.text}>Ajouter d'une photo (camera)</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=> onAddMaterial()} style={[usdTheme.button]}>
-          <Text style={usdTheme.button.text}>Ajouter la tache</Text>
+        <TouchableOpacity style={[usdTheme.button]} onPress={() => onSelectPhotoFromLibrary()}>
+          <Text style={usdTheme.button.text}>Ajout d'une image (galerie d'image)</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=> onAddMaterial()} style={[usdTheme.button, { backgroundColor: "#487aa1"}]}>
+          <Text style={usdTheme.button.text}>Enregistrer le matériel</Text>
         </TouchableOpacity>
       </View>
   )

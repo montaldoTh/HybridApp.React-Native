@@ -13,6 +13,7 @@ import { Connexion } from './screens/Connexion/Connexion';
 import { AjoutTache } from "./screens/AjoutTache/AjoutTache";
 import { MaterialList } from "./screens/MaterialList/MaterialList";
 import { AdingMaterial } from "./screens/AdingMaterial/AdingMaterial";
+import { DetailsMaterial } from "./screens/DetailsMaterial/DetailsMaterial";
 
 
 const App =()=>{
@@ -40,6 +41,7 @@ const App =()=>{
       <Drawer.Screen component={AjoutTache} name="Add task"></Drawer.Screen>
       <Drawer.Screen component={MaterialList} name="Material list"></Drawer.Screen>
       <Drawer.Screen component={AdingMaterial} name="Add Material"></Drawer.Screen>
+      <Drawer.Screen component={DetailsMaterial} name="Material" options={{ drawerLabel: () => null }}></Drawer.Screen>
     </Drawer.Navigator>
   ) : (
     <ConnexionNavigator.Navigator>
