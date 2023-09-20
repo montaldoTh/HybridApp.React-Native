@@ -7,7 +7,7 @@ import { Input } from 'react-native-elements';
 import * as ImagePicker from "expo-image-picker";
 
 
-export const DetailsMaterial = ({ id }) => {
+export const DetailsMaterial = ({ navigation, id }) => {
     
     const route = useRoute();
     const unupdaptedMaterialId = route.params?.id;
@@ -75,6 +75,8 @@ export const DetailsMaterial = ({ id }) => {
         }
     };
 
+    console.log(unupdaptedMaterial);
+
     const onUpdateMaterial = () => {
         if(name === null){
             setName(unupdaptedMaterial.name)
@@ -101,10 +103,8 @@ export const DetailsMaterial = ({ id }) => {
                 reserver: reserver
             }})
         })
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .then(navigation.navigate("Material list"))
-        .catch((err) => console.log(err))
+        .then((response) => response.text())
+        .then((text) => console.log(text))
     }
     
 
