@@ -11,12 +11,14 @@ export const colorsTheme = {
     'light' : {
         backgroundColor: colors.white,
         textColor: colors.black,
-        textSecondaryColor: colors.blue
+        SecondaryColor: colors.blue,
+        status: colors.blue,
     },
     'dark': {
         backgroundColor: colors.black,
         textColor: colors.white,
-        textSecondaryColor: colors.red
+        SecondaryColor: colors.red,
+        status: colors.red
     }
 }
 
